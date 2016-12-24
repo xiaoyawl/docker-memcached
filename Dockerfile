@@ -14,11 +14,7 @@ RUN set -x && \
 	apk --update --no-cache upgrade && \
 	apk add --no-cache --virtual .build-deps \
 		gcc libc-dev libevent-dev linux-headers make perl tar && \
-	#wget -O memcached.tar.gz "http://memcached.org/files/memcached-$MEMCACHED_VERSION.tar.gz" && \
-	#echo "$MEMCACHED_SHA1  memcached.tar.gz" | sha1sum -c - && \
 	mkdir -p /usr/src/memcached && \
-	#tar -xzf memcached.tar.gz -C /usr/src/memcached --strip-components=1 && \
-	#rm memcached.tar.gz && \
 	curl -Lk "http://memcached.org/files/memcached-$MEMCACHED_VERSION.tar.gz" | tar xz -C /usr/src/memcached --strip-components=1 && \
 	cd /usr/src/memcached && \
 	./configure && \
@@ -35,9 +31,6 @@ RUN set -x && \
 	apk add --virtual .memcached-rundeps $runDeps && \
 	apk del .build-deps
 
-#COPY docker-entrypoint.sh /usr/local/bin/
-#RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
-#ENTRYPOINT ["docker-entrypoint.sh"]
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
