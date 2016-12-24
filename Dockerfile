@@ -11,6 +11,8 @@ RUN set -x && \
 	if [ "${LOCAL_MIRRORS_HTTP_CODE}" == "200" ]; then \
 		echo -e "${LOCAL_MIRRORS}/v3.4/main\n${LOCAL_MIRRORS}/v3.4/community" > /etc/apk/repositories; else \
 		echo -e "${NET_MIRRORS}/v3.4/main\n${NET_MIRRORS}/v3.4/community" > /etc/apk/repositories; fi && \
+	addgroup -g 490 -S memcache && \
+	adduser -S -H -u 490 -G memcache memcache && \
 	apk --update --no-cache upgrade && \
 	apk add --no-cache --virtual .build-deps \
 		gcc libc-dev libevent-dev linux-headers make perl tar && \
